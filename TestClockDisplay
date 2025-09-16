@@ -1,0 +1,18 @@
+public class TestClockDisplay
+{
+ 
+public TestClockDisplay()
+{
+}
+ 
+public void test()
+{
+ClockDisplay clock = new ClockDisplay();
+ 
+clock.setTime(22,30);
+System.out.println(clock.getTime());
+ 
+clock.setTime(10,30);
+System.out.println(clock.getTime());
+}
+}
