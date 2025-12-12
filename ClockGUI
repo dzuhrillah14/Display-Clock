@@ -1,0 +1,69 @@
+import javax.swing.*;
+import java.awt.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+public class ClockGUI extends JFrame {
+    private JLabel clockLabel;
+    private JLabel dateLabel;
+    private ClockDisplay clock;
+    
+    public ClockGUI() {
+        setTitle("Digital Clock with Date");
+        setSize(500, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new BorderLayout());
+        
+        JPanel displayPanel = new JPanel();
+        displayPanel.setLayout(new BoxLayout(displayPanel, BoxLayout.Y_AXIS));
+        
+        // Clock label
+        clockLabel = new JLabel("", SwingConstants.CENTER);
+        clockLabel.setFont(new Font("Roboto", Font.BOLD, 48));
+        clockLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Date label
+        dateLabel = new JLabel("", SwingConstants.CENTER);
+        dateLabel.setFont(new Font("Sans Serif", Font.PLAIN, 18));
+        dateLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        
+        // Date spacing
+        displayPanel.add(Box.createVerticalGlue());
+        displayPanel.add(clockLabel);
+        displayPanel.add(Box.createVerticalStrut(3)); // spacing
+        displayPanel.add(dateLabel);
+        displayPanel.add(Box.createVerticalGlue());
+        add(displayPanel, BorderLayout.CENTER);
+        
+        // Initialize clock
+        clock = new ClockDisplay();
+        
+        // sinkronisasi awal
+        clock.setTimeToNow();
+        updateDisplay();
+        
+        // ticking per 1 second
+        Timer timer = new Timer(1000, e -> {
+            clock.setTimeToNow();
+            updateDisplay();
+        });
+        timer.start();
+        
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+    
+    private void updateDisplay() {
+        // Update jam
+        clockLabel.setText(clock.getTime());
+        
+        // Update tanggal   
+        LocalDate currentDate = LocalDate.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
+        dateLabel.setText(currentDate.format(formatter));
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ClockGUI::new);
+    }
+}
